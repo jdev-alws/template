@@ -1,0 +1,43 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import Button from './ui/Button.astro';
+import Icon from './ui/Icon.astro';
+import { posts } from '../data/content';
+---
+<section id="journal" class="section-y bg-cream" aria-labelledby="journal-title">
+  <div class="container-x">
+    <header class="grid gap-6 lg:grid-cols-2 lg:items-end">
+      <div>
+        <SectionTag text="The Journal" />
+        <h2 id="journal-title" class="h-section mt-5" data-split>Latest Insights & Rituals</h2>
+      </div>
+      <div class="lg:justify-self-end lg:text-right" data-reveal>
+        <p class="lede max-w-md">Notes from our therapists on skin, hair and the small habits that make results last.</p>
+        <div class="mt-5"><Button label="Explore Our Journal" variant="dark" href="#journal" /></div>
+      </div>
+    </header>
+
+    <ul class="mt-14 grid gap-5 md:grid-cols-3">
+      {posts.map((p) => (
+        <li data-reveal>
+          <article class="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-sand bg-white">
+            <div class="relative overflow-hidden">
+              <img src={p.image} alt="" class="aspect-[16/11] w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+              <span class="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold backdrop-blur">{p.category}</span>
+            </div>
+            <div class="flex flex-1 flex-col p-6">
+              <p class="text-xs text-muted"><time datetime={new Date(p.date).toISOString().slice(0, 10)}>{p.date}</time> <span aria-hidden="true">/</span> By {p.author}</p>
+              <h3 class="mt-3 font-serif text-2xl leading-snug">
+                <a href="#journal" class="after:absolute after:inset-0 focus:outline-none">{p.title}</a>
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{p.excerpt}</p>
+              <span class="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
+                Read Article <Icon name="arrow-up-right" size={14} class="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </span>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,32 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import Icon from './ui/Icon.astro';
+import { team } from '../data/content';
+---
+<section id="team" class="section-y bg-ivory" aria-labelledby="team-title">
+  <div class="container-x">
+    <header class="mx-auto max-w-xl text-center">
+      <SectionTag text="Meet the Team" />
+      <h2 id="team-title" class="h-section mt-5" data-split>The artists behind every transformation</h2>
+    </header>
+
+    <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {team.map((m) => (
+        <li data-reveal>
+          <article class="group relative overflow-hidden rounded-3xl bg-cream">
+            <img src={m.image} alt={`Portrait of ${m.name}`} class="aspect-[4/4.6] w-full object-cover transition duration-700 ease-out group-hover:scale-105" loading="lazy" decoding="async" />
+            <div class="absolute inset-x-3 bottom-3 flex items-center justify-between rounded-2xl bg-white/95 px-4 py-3 shadow-card backdrop-blur">
+              <div>
+                <h3 class="font-serif text-xl leading-tight">{m.name}</h3>
+                <p class="text-xs text-muted">{m.role}</p>
+              </div>
+              <a href="#" class="grid h-9 w-9 place-items-center rounded-full border border-sand text-ink transition hover:bg-accent hover:text-white" aria-label={`${m.name} on Instagram`}>
+                <Icon name="instagram" size={15} />
+              </a>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

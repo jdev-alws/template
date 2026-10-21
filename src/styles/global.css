@@ -1,0 +1,252 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Lenis ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-ivory font-sans text-ink antialiased; text-rendering: optimizeLegibility; }
+  ::selection { @apply bg-accent text-white; }
+  img { background: #E9E1D6; }
+  img.img-fallback { color: transparent; background: linear-gradient(135deg, #E9DCCD, #C9A68A); }
+  :focus-visible { outline: 2px solid #C45D12; outline-offset: 3px; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-container px-5 sm:px-8; }
+  .section-y { @apply py-20 sm:py-28 lg:py-32; }
+
+  .tag { @apply inline-flex items-center gap-2 rounded-full border border-sand bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-ink; }
+  .tag-dark { @apply border-white/15 bg-white/[0.06] text-white/80 backdrop-blur; }
+  .tag-dot { @apply h-1.5 w-1.5 rounded-full bg-accent; }
+
+  .h-display { @apply font-serif font-medium leading-[1.04] tracking-[-0.01em]; }
+  .h-section { @apply h-display text-4xl sm:text-5xl lg:text-[3.6rem]; }
+  .lede { @apply text-sm leading-relaxed text-muted sm:text-[15px]; }
+
+  .btn { @apply inline-flex items-center gap-3 rounded-full py-1.5 pl-5 pr-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition duration-300 ease-out hover:scale-[1.03] active:scale-[0.98]; }
+  .btn-primary { @apply bg-accent text-white hover:bg-accent-dark hover:shadow-glow; }
+  .btn-dark { @apply bg-ink text-white hover:bg-black hover:shadow-card; }
+  .btn-light { @apply border border-sand bg-white text-ink hover:shadow-card; }
+  .btn-icon { @apply grid h-8 w-8 shrink-0 place-items-center rounded-full transition-transform duration-300; }
+  .btn:hover .btn-icon { transform: rotate(45deg); }
+
+  .card { @apply rounded-3xl border border-sand bg-white shadow-card cursor-pointer; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-sand bg-ivory px-3 py-1 text-[11px] font-medium text-ink/80; }
+
+  .skip-link { @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-white; }
+}
+
+/* ==========================================================================
+   Universal Scroll Reveal Animation System (Same rule across all sections)
+   ========================================================================== */
+
+/* 1. Initial State: Hidden and shifted down by 48px before scrolling into view */
+.js [data-reveal]:not(#top *),
+.js [data-scroll-reveal]:not(#top *) {
+  opacity: 0;
+  transform: translateY(48px) scale(0.96);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.34, 1.35, 0.64, 1),
+              box-shadow 0.4s ease,
+              border-color 0.4s ease;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* 2. Fallbacks for no-JS, reduced motion, or failsafe */
+.js.anim-fallback [data-reveal],
+.js.anim-fallback [data-scroll-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  pointer-events: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal],
+  .js [data-scroll-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* 3. Revealed State: Smooth spring pop-up when scrolled into view */
+.js [data-reveal].is-revealed,
+.js [data-scroll-reveal].is-revealed,
+.js .is-revealed > [data-reveal],
+.js .is-revealed [data-reveal] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* 4. Progressive Cascade / Staircase Reveal Delays across Grids & Lists */
+.js .grid > [data-reveal]:nth-child(1),
+.js ul > [data-reveal]:nth-child(1),
+.js ol > [data-reveal]:nth-child(1),
+.js [data-stagger] > *:nth-child(1),
+.js [data-reels-track] > *:nth-child(1) {
+  transition-delay: 0.08s;
+}
+
+.js .grid > [data-reveal]:nth-child(2),
+.js ul > [data-reveal]:nth-child(2),
+.js ol > [data-reveal]:nth-child(2),
+.js [data-stagger] > *:nth-child(2),
+.js [data-reels-track] > *:nth-child(2) {
+  transition-delay: 0.22s;
+}
+
+.js .grid > [data-reveal]:nth-child(3),
+.js ul > [data-reveal]:nth-child(3),
+.js ol > [data-reveal]:nth-child(3),
+.js [data-stagger] > *:nth-child(3),
+.js [data-reels-track] > *:nth-child(3) {
+  transition-delay: 0.36s;
+}
+
+.js .grid > [data-reveal]:nth-child(4),
+.js ul > [data-reveal]:nth-child(4),
+.js ol > [data-reveal]:nth-child(4),
+.js [data-stagger] > *:nth-child(4),
+.js [data-reels-track] > *:nth-child(4) {
+  transition-delay: 0.50s;
+}
+
+.js .grid > [data-reveal]:nth-child(5),
+.js ul > [data-reveal]:nth-child(5),
+.js ol > [data-reveal]:nth-child(5),
+.js [data-stagger] > *:nth-child(5),
+.js [data-reels-track] > *:nth-child(5) {
+  transition-delay: 0.64s;
+}
+
+.js .grid > [data-reveal]:nth-child(6),
+.js ul > [data-reveal]:nth-child(6),
+.js ol > [data-reveal]:nth-child(6),
+.js [data-stagger] > *:nth-child(6) {
+  transition-delay: 0.78s;
+}
+
+/* 5. Global Card Pop-up Spring Hover Effect (Instant 0s delay once revealed) */
+.card, [data-stack-card], [data-step], .reel, [data-reel-card], [data-portrait-carousel], #team li, #journal li, #academy li, [data-pricing-card] {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  will-change: transform;
+}
+.card:hover, [data-stack-card]:hover, [data-step]:hover, .reel:hover, [data-reel-card]:hover, #team li:hover, #journal li:hover, #academy li:hover, [data-pricing-card]:hover,
+.js [data-reveal].is-revealed:hover,
+.js [data-reveal].is-revealed.card:hover,
+.js [data-reveal].is-revealed [data-pricing-card]:hover,
+.js [data-reveal].is-revealed [data-reel-card]:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  box-shadow: 0 24px 48px -12px rgba(31, 26, 23, 0.16), 0 0 0 1px rgba(196, 93, 18, 0.32) !important;
+  transition-delay: 0s !important;
+  transition-duration: 0.35s !important;
+}
+
+.card:active, [data-stack-card]:active, [data-step]:active, [data-reel-card]:active, #team li:active, #journal li:active, #academy li:active,
+.js [data-reveal].is-revealed:active,
+.js [data-reveal].is-revealed.card:active {
+  transform: translateY(-2px) scale(0.99) !important;
+  transition-delay: 0s !important;
+  transition-duration: 0.15s !important;
+}
+
+/* Cards are visible immediately after page load */
+.js [data-hero] [data-split], .js [data-hero-card] { visibility: hidden; }
+.js.anim-fallback [data-hero] [data-split], .js.anim-fallback [data-hero-card] { visibility: visible; }
+
+.split-word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.split-word > span { display: inline-block; will-change: transform; }
+
+/* Gauge ticks: rich golden amber when lit, matching carousel border */
+.gauge-tick { fill: #EAE4DC; transition: fill .14s ease, opacity .14s ease; }
+.gauge-tick.is-on { fill: #C45D12 !important; }
+
+/* Rotating golden light stream around features carousel */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; transform: scale(0.98); }
+  50% { opacity: 0.95; transform: scale(1.02); }
+}
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* Infinite moving carousel border animation (subtle gold & white tones) */
+@keyframes carousel-border-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-carousel-border {
+  animation: carousel-border-spin 4s linear infinite !important;
+  will-change: transform;
+}
+
+.carousel-border-stream {
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 220, 120, 0.7) 30deg,
+    #ffffff 75deg,
+    rgba(245, 160, 35, 1) 120deg,
+    rgba(196, 93, 18, 0.85) 170deg,
+    transparent 220deg,
+    rgba(255, 235, 160, 0.95) 290deg,
+    #ffffff 325deg,
+    transparent 360deg
+  );
+  animation: carousel-border-spin 4s linear infinite !important;
+  will-change: transform;
+  filter: drop-shadow(0 0 12px rgba(245, 160, 35, 0.65));
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite !important;
+  will-change: transform;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.35; transform: scale(0.98); }
+  50% { opacity: 0.75; transform: scale(1.02); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite !important;
+}
+
+/* Reels */
+.reel-track { scrollbar-width: none; }
+.reel-track::-webkit-scrollbar { display: none; }
+@keyframes reel-kenburns { from { transform: scale(1); } to { transform: scale(1.14); } }
+.reel.is-playing img.reel-media { animation: reel-kenburns 6s ease-out infinite alternate; }
+
+/* Orbit: layout and geometry (rotations are smoothly orchestrated via GSAP) */
+.orbit-item { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(var(--a) * -1)); }
+.orbit-inner { position: absolute; left: 0; top: 0; width: max-content; transform: translate(-50%, -50%); }
+[data-orbit] [data-orbit-item] { will-change: transform; }
+
+/* Ensure GSAP scrub controls y and opacity smoothly on Process cards without CSS transition interference */
+[data-process] [data-step] {
+  transition-property: box-shadow, border-color, background-color !important;
+}
+

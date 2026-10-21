@@ -1,0 +1,72 @@
+---
+import Icon from './ui/Icon.astro';
+import { footerCols, contact } from '../data/content';
+const socials = [
+  { name: 'instagram', label: 'Instagram' },
+  { name: 'facebook', label: 'Facebook' },
+  { name: 'youtube', label: 'YouTube' },
+  { name: 'pinterest', label: 'Pinterest' },
+] as const;
+const year = new Date().getFullYear();
+---
+<footer class="relative overflow-hidden bg-espresso text-white" aria-labelledby="footer-title">
+  <h2 id="footer-title" class="sr-only">Glowence footer</h2>
+  <div class="container-x pt-20">
+    <div class="grid gap-12 border-b border-white/10 pb-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)_1.2fr]">
+      <div data-reveal>
+        <p class="font-serif text-3xl leading-tight">Quiet luxury for hair, skin and body.</p>
+        <ul class="mt-6 space-y-2.5 text-sm text-white/60">
+          <li class="flex items-center gap-2.5"><Icon name="map-pin" size={15} class="text-accent" />{contact.address}</li>
+          <li class="flex items-center gap-2.5"><Icon name="phone" size={15} class="text-accent" /><a href={`tel:${contact.phone.replace(/\s/g, '')}`} class="hover:text-white">{contact.phone}</a></li>
+          <li class="flex items-center gap-2.5"><Icon name="mail" size={15} class="text-accent" /><a href={`mailto:${contact.email}`} class="hover:text-white">{contact.email}</a></li>
+          <li class="flex items-center gap-2.5"><Icon name="clock" size={15} class="text-accent" />{contact.hours}</li>
+        </ul>
+      </div>
+
+      {footerCols.map((col) => (
+        <nav aria-label={col.title} data-reveal>
+          <h3 class="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">{col.title}</h3>
+          <ul class="mt-5 space-y-3 text-sm">
+            {col.links.map(([label, href]) => (
+              <li><a href={href} class="text-white/75 transition hover:text-accent">{label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+
+      <div data-reveal>
+        <h3 class="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/40">Socials</h3>
+        <ul class="mt-5 flex gap-2">
+          {socials.map((s) => (
+            <li>
+              <a href="#" class="grid h-10 w-10 place-items-center rounded-full border border-white/15 text-white/80 transition hover:border-accent hover:bg-accent hover:text-white" aria-label={s.label}>
+                <Icon name={s.name} size={16} />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <form class="mt-6" onsubmit="event.preventDefault(); this.querySelector('[data-ok]').hidden=false; this.reset();">
+          <label for="news" class="text-xs text-white/60">Rituals and offers, once a month</label>
+          <div class="mt-2 flex rounded-full border border-white/15 p-1 focus-within:border-accent">
+            <input id="news" type="email" required placeholder="Email address" autocomplete="email" class="min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-white/35 focus:outline-none" />
+            <button class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-accent text-white" aria-label="Subscribe"><Icon name="arrow-right" size={15} /></button>
+          </div>
+          <p data-ok hidden class="mt-2 text-xs text-accent" role="status">Subscribed. Your first letter arrives next month.</p>
+        </form>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 py-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} Glowence Salon & Spa. All rights reserved.</p>
+      <p>Designed for calm. Built with Astro.</p>
+    </div>
+  </div>
+
+  <!-- massive wordmark, scaled to exactly fill the container width -->
+  <div class="container-x" aria-hidden="true">
+    <svg viewBox="0 0 1000 150" class="block w-full translate-y-[18%]" data-wordmark>
+      <text x="0" y="140" textLength="1000" lengthAdjust="spacingAndGlyphs" fill="currentColor"
+        class="font-serif text-[178px] font-medium text-white/[0.92]">GLOWENCE</text>
+    </svg>
+  </div>
+</footer>

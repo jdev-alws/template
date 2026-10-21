@@ -1,0 +1,479 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import Icon from './ui/Icon.astro';
+import { features, featurePortraits, satisfaction } from '../data/content';
+
+const left = features.slice(0, 3);
+const right = features.slice(3);
+
+// Semicircle gauge: 35 ticks across a 200° arc (from -100° to +100°)
+const TICKS = 35;
+const ticks = Array.from({ length: TICKS }, (_, i) => -100 + (i / (TICKS - 1)) * 200);
+---
+<section id="features" class="section-y bg-cream" aria-labelledby="features-title">
+  <div class="container-x">
+    <header class="mx-auto max-w-xl text-center">
+      <SectionTag text="Our Features" />
+      <h2 id="features-title" class="h-section mt-5" data-split>Beauty, Care & Confidence</h2>
+      <p class="lede mt-4" data-reveal>Every visit is shaped around you: skilled hands, considered products and a space designed to slow you down.</p>
+    </header>
+
+    <div class="mt-14 grid gap-5 lg:grid-cols-[1.62fr_1fr]">
+      <!-- features + portrait carousel card -->
+      <div class="card grid items-center gap-6 p-6 sm:p-8 md:grid-cols-[1fr_auto_1fr] md:gap-7" data-reveal>
+        <!-- Left features -->
+        <ul class="flex flex-col justify-around gap-7 text-center">
+          {left.map((f) => (
+            <li class="flex flex-col items-center text-center" data-feature>
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#F5F1EB] text-[#C45D12] shadow-xs">
+                <Icon name={f.icon as any} size={22} />
+              </span>
+              <span class="mt-3 block text-[15px] font-semibold text-ink">{f.title}</span>
+              <span class="mt-0.5 block text-xs leading-relaxed text-muted">{f.text}</span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Center: Girl image carousel container with moving golden light streams -->
+        <div class="relative mx-auto flex w-full max-w-[280px] sm:max-w-[300px] flex-col items-center justify-between rounded-[32px] bg-[#F6F4EF] border border-[#ECE5DC]/40 p-5 sm:p-6 shadow-xs min-h-[390px] sm:min-h-[420px] overflow-hidden select-none" data-portrait-carousel>
+          <!-- Moving Infinite Gradient Border (subtle glowing gold & white tones) -->
+          <div class="pointer-events-none absolute inset-0 rounded-[32px] overflow-hidden" aria-hidden="true">
+            <div class="carousel-border-stream"></div>
+            <div class="absolute inset-[2.5px] rounded-[30px] bg-[#F6F4EF]"></div>
+          </div>
+
+          <!-- Concentric Ring & Avatar Unit (shares exact center, 100% mathematically balanced, zero overflow) -->
+          <div class="relative z-10 my-auto flex h-[240px] w-[240px] sm:h-[254px] sm:w-[254px] items-center justify-center">
+            
+            <!-- Radiant Golden Ambient Glow behind avatar -->
+            <div class="pointer-events-none absolute inset-0 -m-2 rounded-full bg-[radial-gradient(circle_at_50%_65%,rgba(255,215,100,0.3)_0%,rgba(245,160,35,0.15)_45%,transparent_70%)] animate-pulse-slow"></div>
+
+            <!-- Rotating Golden Ring & Swirling Light Streams (continuous smooth rotation, fully contained) -->
+            <div class="pointer-events-none absolute inset-0 flex items-center justify-center animate-spin-slow will-change-transform">
+              <svg class="h-full w-full" viewBox="0 0 260 260" fill="none">
+                <defs>
+                  <!-- Golden Gradients for luminous metallic light flow -->
+                  <linearGradient id="goldSwirl1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FFF2B2" stop-opacity="0" />
+                    <stop offset="25%" stop-color="#FFD54F" stop-opacity="0.85" />
+                    <stop offset="60%" stop-color="#FFA000" stop-opacity="1" />
+                    <stop offset="90%" stop-color="#E65100" stop-opacity="0.75" />
+                    <stop offset="100%" stop-color="#C45D12" stop-opacity="0" />
+                  </linearGradient>
+                  <linearGradient id="goldSwirl2" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+                    <stop offset="30%" stop-color="#FFE082" stop-opacity="0.95" />
+                    <stop offset="70%" stop-color="#FFB300" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#C45D12" stop-opacity="0.1" />
+                  </linearGradient>
+                  <linearGradient id="outerGoldOrbit" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#F5C06A" stop-opacity="0.95" />
+                    <stop offset="45%" stop-color="#E5A038" stop-opacity="0.75" />
+                    <stop offset="75%" stop-color="#FFD54F" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#C45D12" stop-opacity="0.65" />
+                  </linearGradient>
+                  <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="2.2" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <filter id="intenseGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="3.8" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                <!-- 1. Outer Delicate Golden Circular Orbit -->
+                <circle cx="130" cy="130" r="116" stroke="url(#outerGoldOrbit)" stroke-width="1.4" opacity="0.88" />
+                
+                <!-- 2. Concentric Golden Accent Arc on Left/Top -->
+                <path d="M 28 130 A 116 116 0 0 1 80 48" stroke="#F5C06A" stroke-width="1.6" stroke-linecap="round" opacity="0.92" />
+
+                <!-- 3. Swirling Luminous Golden Light Ribbons (tracing bottom circumference of portrait) -->
+                <!-- Wide Glowing Golden Ribbon -->
+                <path
+                  d="M 44 140 C 44 186 82 226 130 226 C 178 226 216 186 216 140"
+                  stroke="url(#goldSwirl1)"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  fill="none"
+                  filter="url(#intenseGlow)"
+                />
+                <!-- Intertwined Second Golden Light Strand with dynamic wave flair -->
+                <path
+                  d="M 39 128 C 37 184 78 232 130 232 C 182 232 223 184 221 128"
+                  stroke="url(#goldSwirl2)"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  fill="none"
+                  filter="url(#goldGlow)"
+                />
+                <!-- Pure White/Gold High-Intensity Sparkle Thread -->
+                <path
+                  d="M 58 158 C 66 198 94 222 130 222 C 166 222 194 198 202 158"
+                  stroke="#FFF9DB"
+                  stroke-width="1.3"
+                  stroke-linecap="round"
+                  fill="none"
+                  opacity="0.95"
+                />
+                <!-- Delicate outer wisps flaring out into golden ribbon curve -->
+                <path
+                  d="M 64 172 Q 97 228 130 228 Q 163 228 196 172"
+                  stroke="url(#goldSwirl1)"
+                  stroke-width="1.6"
+                  stroke-dasharray="6 5"
+                  fill="none"
+                  opacity="0.85"
+                />
+              </svg>
+            </div>
+
+            <!-- Concentric Circular Avatar Frame (uniform 4px white border, balanced soft luxury glow) -->
+            <div class="relative z-10 h-40 w-40 sm:h-44 sm:w-44 group/carousel cursor-pointer" data-carousel-frame title="Click to view next portrait">
+              <div class="relative h-full w-full overflow-hidden rounded-full border-4 border-white shadow-[0_0_0_1px_rgba(229,160,56,0.35),0_6px_22px_rgba(196,93,18,0.18)] transition-transform duration-300 hover:scale-[1.02]">
+                {featurePortraits.map((p, idx) => (
+                  <div
+                    class:list={[
+                      'absolute inset-0 transition-all duration-700 ease-out',
+                      idx === 0 ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-95 z-0 pointer-events-none'
+                    ]}
+                    data-carousel-slide={idx}
+                  >
+                    <img
+                      src={p.image}
+                      alt={p.alt}
+                      class="h-full w-full object-cover select-none"
+                      loading={idx === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <!-- Prev / Next subtle hover controls -->
+              <button
+                type="button"
+                class="absolute -left-3 top-1/2 -translate-y-1/2 grid h-8 w-8 place-items-center rounded-full bg-white/95 text-ink shadow-md backdrop-blur transition-all duration-200 hover:scale-110 hover:bg-white active:scale-95 opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 z-20"
+                aria-label="Previous portrait"
+                data-carousel-prev
+              >
+                <Icon name="chevron-left" size={15} />
+              </button>
+              <button
+                type="button"
+                class="absolute -right-3 top-1/2 -translate-y-1/2 grid h-8 w-8 place-items-center rounded-full bg-white/95 text-ink shadow-md backdrop-blur transition-all duration-200 hover:scale-110 hover:bg-white active:scale-95 opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 z-20"
+                aria-label="Next portrait"
+                data-carousel-next
+              >
+                <Icon name="chevron-right" size={15} />
+              </button>
+            </div>
+          </div>
+
+          <!-- Single refined amber dot indicator centered below the avatar frame (matching reference screenshot) -->
+          <div class="relative z-20 mt-1 pb-1 flex items-center justify-center">
+            <button
+              type="button"
+              class="h-3 w-3 rounded-full bg-[#C45D12] border-2 border-white shadow-[0_2px_8px_rgba(196,93,18,0.6)] transition-all duration-300 hover:scale-135 focus:outline-none cursor-pointer"
+              aria-label="Toggle next photo"
+              data-carousel-toggle
+            />
+          </div>
+        </div>
+
+        <!-- Right features -->
+        <ul class="flex flex-col justify-around gap-7 text-center">
+          {right.map((f) => (
+            <li class="flex flex-col items-center text-center" data-feature>
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#F5F1EB] text-[#C45D12] shadow-xs">
+                <Icon name={f.icon as any} size={22} />
+              </span>
+              <span class="mt-3 block text-[15px] font-semibold text-ink">{f.title}</span>
+              <span class="mt-0.5 block text-xs leading-relaxed text-muted">{f.text}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- satisfaction meter card (DARK color ticks + moving 0 to 87 on scroll & load + Repeat Clients reveal) -->
+      <div class="card flex flex-col justify-between p-6 sm:p-8 cursor-pointer select-none" data-reveal data-gauge={satisfaction.percent} title="Click to replay meter">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-serif text-2xl font-bold text-ink">{satisfaction.title}</h3>
+            <p class="mt-1 text-xs text-muted">{satisfaction.subtitle}</p>
+          </div>
+          <span class="grid h-10 w-10 place-items-center rounded-full border border-sand text-ink transition hover:bg-[#F6F4EF]" aria-hidden="true">
+            <Icon name="jar" size={18} />
+          </span>
+        </div>
+
+        <!-- Semicircle Meter Gauge with scroll & load 0 to 87 animation -->
+        <div class="relative mx-auto my-auto mt-6 w-full max-w-[270px]">
+          <svg viewBox="0 0 240 140" class="w-full overflow-visible" role="img" aria-label={`${satisfaction.percent}% repeat clients`}>
+            {ticks.map((deg, i) => (
+              <rect
+                class="gauge-tick"
+                data-tick
+                data-index={i}
+                x="117.75"
+                y="6"
+                width="4.5"
+                height="22"
+                rx="2.25"
+                transform={`rotate(${deg} 120 120)`}
+              />
+            ))}
+          </svg>
+          <div class="absolute inset-x-0 bottom-1 flex flex-col items-center justify-center text-center pointer-events-none select-none">
+            <p class="font-serif text-[44px] sm:text-5xl font-bold leading-none tracking-tight text-ink">
+              <span data-gauge-value>0</span>%
+            </p>
+            <p class="mt-2 text-xs sm:text-[13px] font-medium tracking-wide text-ink/80 transition-all duration-700 ease-out opacity-0 translate-y-2" data-gauge-label>
+              Repeat Clients
+            </p>
+            <p class="mt-1 text-[11px] font-medium tracking-wider text-muted/70">
+              <span data-gauge-subvalue>0%</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- 3 Feature Cards side-by-side -->
+        <div class="mt-8 grid grid-cols-3 gap-2.5 sm:gap-3 border-t border-sand/60 pt-5">
+          {satisfaction.metrics.map((m) => (
+            <div class="flex flex-col items-center justify-center rounded-2xl bg-[#F5F1EB] px-2 py-3.5 sm:px-3 sm:py-4 text-center transition duration-200 hover:bg-[#EFEAE2]" data-reveal>
+              <span class="grid h-7 w-7 place-items-center text-[#C45D12]">
+                <Icon name={m.icon as any} size={20} />
+              </span>
+              <span class="mt-2 text-[11px] sm:text-xs font-semibold leading-tight text-ink">
+                {m.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Dedicated client logic for portrait carousel (2 photos, single dot toggle)
+  function initPortraitCarouselComponent() {
+    const carousel = document.querySelector('[data-portrait-carousel]');
+    if (carousel && !carousel.hasAttribute('data-carousel-ready')) {
+      carousel.setAttribute('data-carousel-ready', 'true');
+      const slides = carousel.querySelectorAll<HTMLElement>('[data-carousel-slide]');
+      const toggleBtn = carousel.querySelector<HTMLElement>('[data-carousel-toggle]');
+      const prevBtn = carousel.querySelector<HTMLElement>('[data-carousel-prev]');
+      const nextBtn = carousel.querySelector<HTMLElement>('[data-carousel-next]');
+      const imgFrame = carousel.querySelector<HTMLElement>('[data-carousel-frame]') || carousel;
+
+      let current = 0;
+      let timer: number | null = null;
+
+      const goTo = (index: number) => {
+        const next = (index + slides.length) % slides.length;
+        if (next === current && slides.length > 1) return;
+
+        slides.forEach((slide, i) => {
+          if (i === next) {
+            slide.classList.remove('opacity-0', 'scale-95', 'pointer-events-none', 'z-0');
+            slide.classList.add('opacity-100', 'scale-100', 'z-10');
+          } else {
+            slide.classList.remove('opacity-100', 'scale-100', 'z-10');
+            slide.classList.add('opacity-0', 'scale-95', 'pointer-events-none', 'z-0');
+          }
+        });
+
+        if (toggleBtn) {
+          toggleBtn.style.transform = 'scale(0.6)';
+          setTimeout(() => { toggleBtn.style.transform = 'scale(1)'; }, 220);
+        }
+
+        current = next;
+      };
+
+      const startAuto = () => {
+        stopAuto();
+        timer = window.setInterval(() => goTo(current + 1), 3500);
+      };
+
+      const stopAuto = () => {
+        if (timer !== null) {
+          clearInterval(timer);
+          timer = null;
+        }
+      };
+
+      const toggleSlide = (e?: Event) => {
+        if (e) e.preventDefault();
+        goTo(current + 1);
+        startAuto();
+      };
+
+      toggleBtn?.addEventListener('click', toggleSlide);
+      imgFrame?.addEventListener('click', toggleSlide);
+      prevBtn?.addEventListener('click', (e) => { e.preventDefault(); goTo(current - 1); startAuto(); });
+      nextBtn?.addEventListener('click', toggleSlide);
+
+      carousel.addEventListener('mouseenter', stopAuto);
+      carousel.addEventListener('mouseleave', startAuto);
+
+      startAuto();
+    }
+  }
+
+  // Dedicated foolproof Percentage Meter Controller (0 to 87 on scroll + Repeat Clients strictly at 87%)
+  function initGaugeMeter() {
+    const gauge = document.querySelector('[data-gauge]');
+    if (!gauge || gauge.hasAttribute('data-gauge-active')) return;
+    gauge.setAttribute('data-gauge-active', 'true');
+
+    const targetPct = 87;
+    const ticks = gauge.querySelectorAll<SVGRectElement>('[data-tick]');
+    const valEl = gauge.querySelector('[data-gauge-value]');
+    const subValEl = gauge.querySelector('[data-gauge-subvalue]');
+    const repeatLabel = gauge.querySelector<HTMLElement>('[data-gauge-label]');
+
+    let currentVal = 0;
+    let animId: number | null = null;
+    let isFinished = false;
+
+    const paint = (v: number) => {
+      const clamped = Math.max(0, Math.min(100, v));
+      const lit = Math.round((clamped / 100) * ticks.length);
+      ticks.forEach((t, i) => {
+        if (i < lit) {
+          t.classList.add('is-on');
+        } else {
+          t.classList.remove('is-on');
+        }
+      });
+      const intVal = Math.round(clamped);
+      if (valEl) valEl.textContent = String(intVal);
+      if (subValEl) subValEl.textContent = `${intVal}%`;
+
+      // ONLY reveal "Repeat Clients" when reaching 87%
+      if (repeatLabel) {
+        if (clamped >= 86.8) {
+          repeatLabel.classList.remove('opacity-0', 'translate-y-2');
+          repeatLabel.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          repeatLabel.classList.remove('opacity-100', 'translate-y-0');
+          repeatLabel.classList.add('opacity-0', 'translate-y-2');
+        }
+      }
+    };
+
+    // Paint strictly 0 on page load
+    paint(0);
+
+    const startCountUp = () => {
+      if (animId !== null) cancelAnimationFrame(animId);
+      const startTime = performance.now();
+      const startV = currentVal;
+      const duration = 2000; // 2 seconds smooth count-up
+
+      const step = (now: number) => {
+        const elapsed = now - startTime;
+        const p = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3); // smooth ease out cubic
+        currentVal = startV + (targetPct - startV) * ease;
+        paint(currentVal);
+
+        if (p < 1) {
+          animId = requestAnimationFrame(step);
+        } else {
+          currentVal = targetPct;
+          paint(targetPct);
+          isFinished = true;
+          animId = null;
+        }
+      };
+
+      animId = requestAnimationFrame(step);
+    };
+
+    const resetGauge = () => {
+      if (animId !== null) cancelAnimationFrame(animId);
+      animId = null;
+      currentVal = 0;
+      isFinished = false;
+      paint(0);
+    };
+
+    const onScroll = () => {
+      const rect = gauge.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.1;
+
+      if (inView) {
+        if (!isFinished && animId === null) {
+          startCountUp();
+        }
+      } else if (rect.top > window.innerHeight * 1.05 || rect.bottom < -50) {
+        if (isFinished || currentVal > 0) {
+          resetGauge();
+        }
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Also trigger via IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (!isFinished && animId === null) startCountUp();
+        } else if (!entry.isIntersecting && (isFinished || currentVal > 0)) {
+          resetGauge();
+        }
+      });
+    }, { threshold: 0.15 });
+    observer.observe(gauge);
+
+    // Click to replay meter anytime
+    gauge.addEventListener('click', () => {
+      resetGauge();
+      setTimeout(startCountUp, 60);
+    });
+  }
+
+  function initFeatures() {
+    initPortraitCarouselComponent();
+    initGaugeMeter();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFeatures);
+  } else {
+    initFeatures();
+  }
+</script>
+
+<style>
+  @keyframes carousel-border-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-carousel-border {
+    animation: carousel-border-spin 8s linear infinite;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-carousel-border {
+      animation: none !important;
+    }
+  }
+</style>

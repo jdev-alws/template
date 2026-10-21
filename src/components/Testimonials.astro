@@ -1,0 +1,41 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import Icon from './ui/Icon.astro';
+import { testimonials } from '../data/content';
+const start = Math.floor(testimonials.length / 2);
+---
+<section class="section-y bg-ivory pt-0 sm:pt-0 lg:pt-0" aria-labelledby="testi-title" data-testimonials>
+  <div class="container-x">
+    <header class="mx-auto max-w-xl text-center">
+      <SectionTag text="Testimonials" />
+      <h2 id="testi-title" class="h-section mt-5" data-split>Beautiful experiences, cherished by our guests</h2>
+    </header>
+
+    <div class="mt-14 flex items-end justify-center gap-2 sm:gap-4" role="tablist" aria-label="Choose a guest review" data-reveal>
+      {testimonials.map((t, i) => (
+        <button type="button" role="tab" id={`tt-${i}`} aria-controls={`tp-${i}`} aria-selected={i === start ? 'true' : 'false'} tabindex={i === start ? 0 : -1}
+          data-testi-tab={i}
+          class="group w-[18%] max-w-[150px] overflow-hidden rounded-2xl bg-accent transition-all duration-500 ease-out aria-selected:w-[30%] aria-selected:max-w-[240px] aria-[selected=false]:opacity-80 hover:opacity-100">
+          <span class="sr-only">Review from {t.name}</span>
+          <img src={t.image} alt="" class="aspect-[3/4] w-full object-cover mix-blend-luminosity transition duration-500 group-aria-selected:mix-blend-normal" loading="lazy" decoding="async" />
+        </button>
+      ))}
+    </div>
+
+    <div class="mx-auto mt-8 grid max-w-2xl">
+      {testimonials.map((t, i) => (
+        <figure id={`tp-${i}`} role="tabpanel" aria-labelledby={`tt-${i}`} data-testi-panel={i} hidden={i !== start}
+          class="card [grid-area:1/1] p-7 text-center sm:p-10" data-reveal>
+          <div class="flex justify-center gap-1 text-accent" aria-label="5 out of 5 stars" role="img">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" size={15} />)}
+          </div>
+          <blockquote class="mt-5 font-serif text-xl leading-relaxed sm:text-2xl">“{t.quote}”</blockquote>
+          <figcaption class="mt-6">
+            <span class="block text-sm font-semibold">{t.name}</span>
+            <span class="block text-xs text-muted">{t.role}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

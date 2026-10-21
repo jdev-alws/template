@@ -1,0 +1,7 @@
+---
+interface Props { text: string; dark?: boolean; class?: string }
+const { text, dark = false, class: cls = '' } = Astro.props;
+---
+<span class:list={['tag', dark && 'tag-dark', cls]} data-reveal>
+  <span class="tag-dot" aria-hidden="true"></span>{text}
+</span>

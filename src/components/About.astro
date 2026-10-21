@@ -1,0 +1,33 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import Button from './ui/Button.astro';
+import { img } from '../data/content';
+---
+<section id="about" class="section-y bg-ivory" aria-labelledby="about-title">
+  <div class="container-x">
+    <div class="flex justify-center"><SectionTag text="About Glowence" /></div>
+
+    <div class="mt-12 grid items-center gap-12 lg:mt-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+      <!-- offset imagery -->
+      <div class="relative mx-auto aspect-[5/4] w-full max-w-md lg:max-w-none" data-about-media data-reveal>
+        <figure class="absolute left-0 top-0 w-[68%] overflow-hidden rounded-[28px] shadow-card" data-about-img="1">
+          <img src={img.massage} alt="Therapist performing a warm oil back massage" class="aspect-[4/3] w-full object-cover" loading="lazy" decoding="async" />
+        </figure>
+        <figure class="absolute bottom-0 right-0 w-[52%] overflow-hidden rounded-[28px] border-[6px] border-ivory shadow-card" data-about-img="2">
+          <img src={img.facialB} alt="Guest relaxing during a botanical facial" class="aspect-square w-full object-cover" loading="lazy" decoding="async" />
+        </figure>
+        <div class="absolute bottom-[14%] left-[6%] rounded-2xl bg-white px-4 py-3 shadow-card" data-reveal>
+          <p class="font-serif text-3xl leading-none text-ink"><span data-count="12">0</span>+</p>
+          <p class="mt-1 text-[11px] text-muted">Years of quiet luxury</p>
+        </div>
+      </div>
+
+      <div class="text-center lg:text-left">
+        <h2 id="about-title" class="h-display text-[clamp(1.75rem,3.2vw,2.75rem)] leading-[1.18] text-ink" data-split-scrub>
+          We believe that every ritual tells a story — and we’re here to make yours more radiant, restorative, and distinct. Whether you’re seeking a signature styling or a complete wellness rejuvenation.
+        </h2>
+        <div class="mt-9" data-reveal><Button label="Discover Our Story" variant="dark" href="#team" /></div>
+      </div>
+    </div>
+  </div>
+</section>

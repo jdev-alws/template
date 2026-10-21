@@ -1,0 +1,424 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import { reels } from '../data/content';
+
+// Enhanced metadata for the 5 guest transformation reels matching reference screenshot
+const reelDetails = [
+  {
+    label: 'Precision Cut',
+    subtitle: 'Sculpted Fade & Botanical Scalp Cleanse',
+    stylist: 'Lucas Reynolds',
+    studio: 'SoHo Flagship Studio',
+    duration: '45 min',
+    tag: 'Barber Craft',
+    description: 'Bespoke precision scissor & clipper work tailored to hair density and face structure.',
+    views: '14.2k views',
+    image: reels[0]?.image || 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    label: 'Botanical Facial',
+    subtitle: 'Plant-Enzyme Cleansing & Lymphatic Drainage',
+    stylist: 'Sophia Bennett',
+    studio: 'Tribeca Sanctuary',
+    duration: '60 min',
+    tag: 'Organic Ritual',
+    description: 'Soothing chamomile steam, acupressure drainage massage, and cooling botanical cryo-globes.',
+    views: '28.6k views',
+    image: reels[1]?.image || 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    label: 'Balayage',
+    subtitle: 'Luminous Sun-Kissed Tone & Silk Bond Gloss',
+    stylist: 'Elena Rostova',
+    studio: 'Madison Avenue Studio',
+    duration: '90 min',
+    tag: 'Signature Hero',
+    description: 'Freehand dimensional highlights blended seamlessly without harsh grow-out lines.',
+    views: '42.8k views',
+    image: reels[2]?.image || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    label: 'Colour Studio',
+    subtitle: 'Warm Caramel Gloss & Deep Scalp Hydro-Bath',
+    stylist: 'Olivia Hayes',
+    studio: 'SoHo Flagship Studio',
+    duration: '75 min',
+    tag: 'Color Harmony',
+    description: 'High-shine peptide gloss treatment paired with warm waterfall scalp therapy.',
+    views: '19.4k views',
+    image: reels[3]?.image || 'https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=900&q=80',
+  },
+  {
+    label: 'Styling Floor',
+    subtitle: 'Velvet Volume Blowout & Anti-Frizz Glaze',
+    stylist: 'Marcus Vance',
+    studio: 'Tribeca Sanctuary',
+    duration: '50 min',
+    tag: 'Final Finish',
+    description: 'Air-whipped round brush blowout with Moroccan argan elixir for weightless 72-hour bounce.',
+    views: '21.1k views',
+    image: reels[4]?.image || 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80',
+  },
+];
+---
+<section id="reels" class="section-y bg-ivory" aria-labelledby="reels-title">
+  <div class="container-x">
+    <!-- Centered section tag above card (matching reference screenshot) -->
+    <header class="flex flex-col items-center text-center mb-8">
+      <SectionTag text="Guest Reels" />
+      <h2 id="reels-title" class="sr-only">Guest Reels & Transformations</h2>
+    </header>
+
+    <!-- Main Large Beige Container (matching reference screenshot rounded-[36px]/[44px]) -->
+    <div class="relative mx-auto rounded-[36px] sm:rounded-[44px] bg-[#F4EEE7] border border-[#E9DFD3] p-5 sm:p-8 md:p-11 shadow-sm overflow-hidden" data-reels-container data-reveal>
+      
+      <!-- Top Row inside the card (matching screenshot) -->
+      <div class="flex items-center justify-between gap-4 pb-7 sm:pb-9">
+        <!-- Left: Double golden circle play badge -->
+        <div class="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white shadow-xs border border-[#ECE0D4] shrink-0" aria-hidden="true">
+          <div class="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border-2 border-[#C45D12] text-[#C45D12]">
+            <svg class="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+
+        <!-- Right/Center: Transformations badge pill -->
+        <div class="inline-flex items-center gap-2 sm:gap-2.5 rounded-full border border-[#E6DACD] bg-white px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-[13px] text-ink/85 shadow-xs">
+          <span class="rounded-full bg-[#C45D12] px-2.5 py-0.5 font-bold text-xs text-white">1,200+</span>
+          <span class="font-normal text-muted hidden xs:inline sm:inline">transformations filmed across our three studios</span>
+          <span class="font-normal text-muted inline xs:hidden sm:hidden">transformations filmed</span>
+        </div>
+      </div>
+
+      <!-- Center 5-Card Staggered Arch Layout (matching reference screenshot) -->
+      <div class="relative py-2 sm:py-4">
+        <!-- Desktop: 5-card arch row with center card elevated & bordered -->
+        <!-- Mobile/Tablet: smooth scrollable / snap-center gallery -->
+        <div class="flex items-center justify-start lg:justify-center gap-3.5 sm:gap-4 md:gap-5 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 scrollbar-none snap-x snap-mandatory px-1" data-reels-track>
+          {reelDetails.map((reel, index) => {
+            const isCenterHero = index === 2; // Card 3: "Balayage"
+            return (
+              <div
+                class:list={[
+                  'group/reel relative shrink-0 snap-center rounded-[22px] overflow-hidden cursor-pointer select-none transition-all duration-400 ease-out',
+                  'w-[200px] sm:w-[220px] md:w-[210px] lg:w-[19%]',
+                  isCenterHero
+                    ? 'h-[320px] sm:h-[370px] lg:h-[395px] border-4 border-white shadow-2xl shadow-ink/25 z-10 lg:-translate-y-2'
+                    : index === 1 || index === 3
+                    ? 'h-[300px] sm:h-[345px] lg:h-[370px] shadow-lg shadow-ink/10 lg:-translate-y-1'
+                    : 'h-[280px] sm:h-[325px] lg:h-[350px] shadow-md shadow-ink/10'
+                ]}
+                data-reel-card
+                data-reveal
+                data-index={index}
+                data-title={reel.label}
+                data-subtitle={reel.subtitle}
+                data-stylist={reel.stylist}
+                data-studio={reel.studio}
+                data-duration={reel.duration}
+                data-description={reel.description}
+                data-image={reel.image}
+                title={`Click to play ${reel.label} Transformation`}
+              >
+                <!-- Reel Background Image with smooth zoom on hover -->
+                <img
+                  src={reel.image}
+                  alt={reel.label}
+                  class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/reel:scale-108"
+                  loading={index < 3 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+
+                <!-- Subtle film grain / dark bottom gradient overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none transition-opacity duration-300 group-hover/reel:from-black/85"></div>
+
+                <!-- Bottom-Left: White Treatment Name Pill (matching screenshot) -->
+                <div class="absolute bottom-3 left-3 z-20 pointer-events-none">
+                  <span class="inline-block rounded-full bg-white/95 px-3 py-1 text-[11px] sm:text-xs font-semibold text-ink shadow-sm backdrop-blur-xs transition-transform duration-300 group-hover/reel:scale-105">
+                    {reel.label}
+                  </span>
+                </div>
+
+                <!-- Bottom-Right: Dark Circular Play Button (matching screenshot) -->
+                <div class="absolute bottom-3 right-3 z-20">
+                  <button
+                    type="button"
+                    class="grid h-8 w-8 sm:h-9 sm:w-9 place-items-center rounded-full bg-black/85 text-white shadow-md transition-all duration-300 group-hover/reel:scale-115 group-hover/reel:bg-[#C45D12]"
+                    aria-label={`Play transformation reel for ${reel.label}`}
+                  >
+                    <svg class="h-3.5 w-3.5 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <!-- Bottom Row inside the card (matching screenshot) -->
+      <div class="mt-8 sm:mt-10 flex items-center justify-between">
+        <!-- Invisible spacer on left to keep button perfectly centered -->
+        <div class="h-12 w-12 sm:h-14 sm:w-14 shrink-0 hidden sm:block pointer-events-none" aria-hidden="true"></div>
+
+        <!-- Center: CTA Button in rich golden caramel (matching screenshot) -->
+        <div class="mx-auto">
+          <a
+            href="#pricing"
+            class="inline-flex items-center gap-3 rounded-full bg-[#C45D12] hover:bg-[#A8470B] text-white px-6 sm:px-8 py-3 sm:py-3.5 text-xs sm:text-[13px] font-bold uppercase tracking-[0.14em] shadow-lg hover:shadow-glow transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
+          >
+            <span class="grid h-6 w-6 place-items-center rounded-full bg-white text-[#C45D12] font-bold text-xs shadow-xs">
+              →
+            </span>
+            <span>View Transformations</span>
+          </a>
+        </div>
+
+        <!-- Right: Double golden circle play badge (matching screenshot) -->
+        <div class="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white shadow-xs border border-[#ECE0D4] shrink-0" aria-hidden="true">
+          <div class="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border-2 border-[#C45D12] text-[#C45D12]">
+            <svg class="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POP-UP LIGHTBOX MODAL FOR REELS -->
+  <div
+    id="reel-lightbox"
+    class="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 select-none"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="lightbox-title"
+  >
+    <div
+      id="lightbox-card"
+      class="relative w-full max-w-[360px] sm:max-w-[420px] md:max-w-[460px] max-h-[92vh] overflow-hidden rounded-[32px] bg-[#14100E] border border-white/15 text-white shadow-2xl transition-transform duration-300 scale-90 flex flex-col"
+    >
+      <!-- Close button -->
+      <button
+        type="button"
+        id="lightbox-close"
+        class="absolute top-4 right-4 z-30 grid h-10 w-10 place-items-center rounded-full bg-black/60 hover:bg-white text-white hover:text-black backdrop-blur transition-all duration-200 cursor-pointer shadow-lg"
+        aria-label="Close transformation reel"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Video / Reel Viewport -->
+      <div class="relative w-full aspect-[9/13] bg-black overflow-hidden flex items-center justify-center group/player">
+        <img
+          id="lightbox-img"
+          src=""
+          alt=""
+          class="h-full w-full object-cover transition-transform duration-1000"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/45 pointer-events-none"></div>
+
+        <!-- Top reel header info -->
+        <div class="absolute top-4 left-4 right-14 z-20 pointer-events-none">
+          <span class="inline-block rounded-full bg-white/20 backdrop-blur-md px-3 py-1 text-[10px] font-semibold tracking-wider uppercase text-white/95">
+            Guest Transformation
+          </span>
+          <p id="lightbox-studio" class="mt-1 text-xs text-white/75 font-medium">SoHo Flagship Studio</p>
+        </div>
+
+        <!-- Center animated play pulse overlay -->
+        <button
+          type="button"
+          id="lightbox-play-toggle"
+          class="absolute z-20 grid h-16 w-16 place-items-center rounded-full bg-[#C45D12]/90 hover:bg-[#C45D12] text-white shadow-glow transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+          aria-label="Play / Pause reel"
+        >
+          <svg id="lightbox-play-icon" class="w-7 h-7 fill-current ml-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="lightbox-pause-icon" class="w-7 h-7 fill-current hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+
+        <!-- Bottom details inside player -->
+        <div class="absolute inset-x-0 bottom-0 p-5 z-20">
+          <div class="flex items-baseline justify-between">
+            <h3 id="lightbox-title" class="font-serif text-2xl sm:text-3xl font-bold text-white">Treatment</h3>
+            <span id="lightbox-duration" class="text-xs font-semibold text-[#FFD54F]">60 min</span>
+          </div>
+          <p id="lightbox-subtitle" class="mt-1 text-xs text-white/80 line-clamp-1">Natural dimension & tone</p>
+          <p id="lightbox-desc" class="mt-1.5 text-[11px] leading-relaxed text-white/60 line-clamp-2">Bespoke luxury experience.</p>
+
+          <!-- Interactive Progress timeline -->
+          <div class="mt-4 flex items-center gap-3">
+            <div class="relative flex-1 h-1.5 rounded-full bg-white/20 overflow-hidden cursor-pointer" id="lightbox-progress-bar">
+              <div id="lightbox-progress" class="h-full w-0 rounded-full bg-[#C45D12] transition-all duration-100"></div>
+            </div>
+            <span id="lightbox-time" class="text-[10px] font-mono text-white/70">0:00 / 0:30</span>
+          </div>
+
+          <!-- Bottom Action: Book This Look CTA -->
+          <div class="mt-4 flex items-center justify-between pt-2 border-t border-white/10">
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-[#22C55E] animate-pulse"></span>
+              <span class="text-[11px] text-white/70">Stylist: <span id="lightbox-stylist" class="text-white font-medium">Elena</span></span>
+            </div>
+            <a
+              id="lightbox-book-btn"
+              href="#pricing"
+              class="inline-flex items-center gap-2 rounded-full bg-[#C45D12] hover:bg-[#A8470B] text-white px-4 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-200 hover:scale-105"
+            >
+              Book This Look
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Interactive Reel Pop-up Modal Controller
+  function initReelLightbox() {
+    const lightbox = document.getElementById('reel-lightbox');
+    const card = document.getElementById('lightbox-card');
+    const closeBtn = document.getElementById('lightbox-close');
+    const bookBtn = document.getElementById('lightbox-book-btn');
+    const playToggle = document.getElementById('lightbox-play-toggle');
+    const playIcon = document.getElementById('lightbox-play-icon');
+    const pauseIcon = document.getElementById('lightbox-pause-icon');
+    const progressBar = document.getElementById('lightbox-progress');
+    const timeDisplay = document.getElementById('lightbox-time');
+    const titleEl = document.getElementById('lightbox-title');
+    const subtitleEl = document.getElementById('lightbox-subtitle');
+    const stylistEl = document.getElementById('lightbox-stylist');
+    const studioEl = document.getElementById('lightbox-studio');
+    const durationEl = document.getElementById('lightbox-duration');
+    const descEl = document.getElementById('lightbox-desc');
+    const imgEl = document.getElementById('lightbox-img') as HTMLImageElement | null;
+
+    if (!lightbox || !card) return;
+
+    let isPlaying = false;
+    let progressTimer: number | null = null;
+    let currentTime = 0;
+    const totalDuration = 30; // 30s reel
+
+    const updatePlayState = (playing: boolean) => {
+      isPlaying = playing;
+      if (playIcon && pauseIcon) {
+        if (playing) {
+          playIcon.classList.add('hidden');
+          pauseIcon.classList.remove('hidden');
+        } else {
+          playIcon.classList.remove('hidden');
+          pauseIcon.classList.add('hidden');
+        }
+      }
+
+      if (playing) {
+        if (progressTimer !== null) clearInterval(progressTimer);
+        progressTimer = window.setInterval(() => {
+          currentTime += 0.2;
+          if (currentTime >= totalDuration) {
+            currentTime = 0;
+          }
+          const pct = (currentTime / totalDuration) * 100;
+          if (progressBar) progressBar.style.width = `${pct}%`;
+          if (timeDisplay) {
+            const sec = Math.floor(currentTime);
+            timeDisplay.textContent = `0:${String(sec).padStart(2, '0')} / 0:30`;
+          }
+        }, 200);
+      } else {
+        if (progressTimer !== null) {
+          clearInterval(progressTimer);
+          progressTimer = null;
+        }
+      }
+    };
+
+    const openModal = (data: {
+      title: string;
+      subtitle: string;
+      stylist: string;
+      studio: string;
+      duration: string;
+      desc: string;
+      image: string;
+    }) => {
+      if (titleEl) titleEl.textContent = data.title;
+      if (subtitleEl) subtitleEl.textContent = data.subtitle;
+      if (stylistEl) stylistEl.textContent = data.stylist;
+      if (studioEl) studioEl.textContent = data.studio;
+      if (durationEl) durationEl.textContent = data.duration;
+      if (descEl) descEl.textContent = data.desc;
+      if (imgEl) {
+        imgEl.src = data.image;
+        imgEl.alt = data.title;
+      }
+
+      currentTime = 0;
+      if (progressBar) progressBar.style.width = '0%';
+      if (timeDisplay) timeDisplay.textContent = '0:00 / 0:30';
+
+      lightbox.classList.remove('opacity-0', 'pointer-events-none');
+      lightbox.classList.add('opacity-100', 'pointer-events-auto');
+      card.classList.remove('scale-90');
+      card.classList.add('scale-100');
+
+      document.body.style.overflow = 'hidden';
+      // Stop Lenis if global
+      if (window.__lenis) window.__lenis.stop();
+
+      updatePlayState(true);
+    };
+
+    const closeModal = () => {
+      lightbox.classList.remove('opacity-100', 'pointer-events-auto');
+      lightbox.classList.add('opacity-0', 'pointer-events-none');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-90');
+
+      document.body.style.overflow = '';
+      if (window.__lenis) window.__lenis.start();
+
+      updatePlayState(false);
+    };
+
+    // Attach click listeners to all 5 reel cards
+    document.querySelectorAll<HTMLElement>('[data-reel-card]').forEach((cardEl) => {
+      cardEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal({
+          title: cardEl.getAttribute('data-title') || 'Transformation',
+          subtitle: cardEl.getAttribute('data-subtitle') || '',
+          stylist: cardEl.getAttribute('data-stylist') || 'Master Specialist',
+          studio: cardEl.getAttribute('data-studio') || 'SoHo Studio',
+          duration: cardEl.getAttribute('data-duration') || '60 min',
+          desc: cardEl.getAttribute('data-description') || '',
+          image: cardEl.getAttribute('data-image') || '',
+        });
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+    bookBtn?.addEventListener('click', closeModal);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lightbox.classList.contains('pointer-events-none')) {
+        closeModal();
+      }
+    });
+
+    playToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updatePlayState(!isPlaying);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReelLightbox);
+  } else {
+    initReelLightbox();
+  }
+</script>

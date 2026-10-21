@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  href?: string;
+  label: string;
+  variant?: 'primary' | 'dark' | 'light';
+  icon?: 'arrow-up-right' | 'calendar' | 'arrow-right';
+  class?: string;
+  ariaLabel?: string;
+}
+const { href = '#book', label, variant = 'primary', icon = 'arrow-up-right', class: cls = '', ariaLabel } = Astro.props;
+// Literal class names so Tailwind's content scanner keeps them.
+const variantCls = { primary: 'btn-primary', dark: 'btn-dark', light: 'btn-light' }[variant];
+const iconCls = { primary: 'bg-white text-accent', dark: 'bg-accent text-white', light: 'bg-accent text-white' }[variant];
+---
+<a href={href} class:list={['btn', variantCls, cls]} aria-label={ariaLabel}>
+  <span>{label}</span>
+  <span class:list={['btn-icon', iconCls]}><Icon name={icon} size={14} /></span>
+</a>

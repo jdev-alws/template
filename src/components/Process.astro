@@ -1,0 +1,158 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import { img } from '../data/content';
+
+const processSteps = [
+  {
+    step: 'STEP - 01',
+    title: 'Consult & Relax',
+    text: 'Personalized Consultation To Understand Your Needs And Comfort',
+    image: img.makeup,
+    liftClass: 'lg:mt-48',
+  },
+  {
+    step: 'STEP - 02',
+    title: 'Cleanse & Prep',
+    text: 'Gentle Cleansing Prepares YourSkin For Treatments Ahead',
+    image: img.facialB,
+    liftClass: 'lg:mt-36',
+  },
+  {
+    step: 'STEP - 03',
+    title: 'Treat & Heal',
+    text: 'Expert Therapies Relax Muscles And Restore Natural Balance',
+    image: img.facial,
+    liftClass: 'lg:mt-24',
+  },
+  {
+    step: 'STEP - 04',
+    title: 'Refresh & Glow',
+    text: 'Finishing Touches Leave You Refreshed, Glowing, And Renewed',
+    image: img.massage,
+    liftClass: 'lg:mt-12',
+  },
+  {
+    step: 'STEP - 05',
+    title: 'Maintain & Shine',
+    text: 'Personalized Care Keeps Your Skin Healthy, Radiant, And Glowing',
+    image: img.skincare,
+    liftClass: 'lg:mt-0',
+  },
+];
+---
+<section class="relative overflow-hidden bg-cream py-20 lg:py-24" aria-labelledby="process-title" data-process>
+  <div class="container-x flex flex-col justify-center">
+    <header class="text-center mb-12 sm:mb-16">
+      <SectionTag text="Working Process" />
+      <h2 id="process-title" class="h-section mx-auto mt-5 max-w-xl" data-split>Five calm steps to your glow</h2>
+    </header>
+
+    <div class="relative w-full overflow-hidden py-4" data-process-track-wrapper>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 items-start" data-process-track>
+        {processSteps.map((s, i) => (
+          <li class:list={['relative', s.liftClass]}>
+            <article
+              data-step={String(i + 1)}
+              class="card group flex flex-col items-center text-center p-3 sm:p-4 pb-6 bg-white rounded-[26px] border border-sand/70 shadow-card hover:shadow-2xl transition-all duration-400"
+            >
+              <div class="relative w-full aspect-[4/3.5] overflow-hidden rounded-[20px] bg-cocoa">
+                <img
+                  src={s.image}
+                  alt={s.title}
+                  class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-108"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              
+              <div class="mt-4">
+                <span class="inline-block rounded-full bg-[#F5F1EB] px-3.5 py-1 text-[11px] font-semibold tracking-wider text-ink/80 shadow-2xs">
+                  ({s.step})
+                </span>
+              </div>
+
+              <h3 class="mt-2.5 font-serif text-xl sm:text-2xl font-bold text-ink leading-snug">
+                {s.title}
+              </h3>
+              <p class="mt-2 text-xs sm:text-[13px] leading-relaxed text-muted max-w-[210px] mx-auto">
+                {s.text}
+              </p>
+            </article>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initProcessGSAP() {
+    const section = document.querySelector('[data-process]');
+    if (!section) return;
+
+    const cards = Array.from(section.querySelectorAll<HTMLElement>('[data-step]'));
+    if (!cards.length) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      gsap.set(cards, { y: 0, opacity: 1 });
+      return;
+    }
+
+    const mm = gsap.matchMedia();
+
+    // Desktop: cards rise from 90px below and fade in one after another (step 1 first) with scrub: 1
+    mm.add('(min-width: 768px)', () => {
+      gsap.set(cards, { y: 90, opacity: 0 });
+
+      gsap.to(cards, {
+        y: 0,
+        opacity: 1,
+        stagger: 0.25,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          end: 'bottom 65%',
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+    });
+
+    // Mobile: each card fades up once when it enters the screen
+    mm.add('(max-width: 767px)', () => {
+      cards.forEach((card) => {
+        gsap.set(card, { y: 60, opacity: 0 });
+        ScrollTrigger.create({
+          trigger: card,
+          start: 'top 88%',
+          once: true,
+          onEnter: () => {
+            gsap.to(card, {
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power2.out',
+            });
+          },
+        });
+      });
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  document.addEventListener('astro:page-load', initProcessGSAP);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProcessGSAP);
+  } else {
+    initProcessGSAP();
+  }
+</script>

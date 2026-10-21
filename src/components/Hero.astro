@@ -1,0 +1,210 @@
+---
+import Icon from './ui/Icon.astro';
+import Button from './ui/Button.astro';
+import { img, valueProps } from '../data/content';
+
+// 20 curated cards forming the complete rotating arch framing the hero title
+// Exactly matches the screenshot of the original template with 11 cards visible in the upper arch
+const heroCardsData = [
+  { src: img.massageB, title: 'Scalp & Hair Ritual' },
+  { src: img.facial, title: 'Bespoke Facials' },
+  { src: img.spaTreatment, title: 'Hydrotherapy Treatment' },
+  { src: img.facialMask, title: 'Hydra-Glow Therapy' },
+  { src: img.candles, title: 'Sanctuary Ambiance' },
+  { src: img.massage, title: 'Aroma Rituals' },
+  { src: img.stones, title: 'Basalt Hot Stones' },
+  { src: img.hairColour, title: 'Balayage & Glow' },
+  { src: img.salon, title: 'Couture Styling' },
+  { src: img.nails, title: 'Artisan Manicure' },
+  { src: img.wellness, title: 'Holistic Beauty' },
+  { src: img.facialB, title: 'Botanical Glow' },
+  { src: img.salonB, title: 'Precision Cut' },
+  { src: img.makeup, title: 'Editorial Aesthetics' },
+  { src: img.skinPortrait, title: 'Radiance Therapy' },
+  { src: img.skincare, title: 'Botanical Skincare' },
+  { src: img.salonC, title: 'Styling Sanctuary' },
+  { src: img.nailsB, title: 'Luxury Pedicure' },
+  { src: img.w1, title: 'Guest Radiance' },
+  { src: img.w7, title: 'Glow Ritual' },
+];
+
+const totalCards = heroCardsData.length;
+const angleStep = 360 / totalCards;
+---
+
+<section id="top" class="relative isolate overflow-hidden bg-espresso text-white" aria-labelledby="hero-title">
+  <!-- backdrop -->
+  <div class="absolute inset-0 -z-10">
+    <img src={img.heroBg} alt="" class="h-full w-full scale-110 object-cover opacity-35" data-hero-bg fetchpriority="high" />
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_65%,rgba(17,14,12,.35),rgba(17,14,12,.92)_70%)]"></div>
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-espresso to-transparent"></div>
+  </div>
+
+  <div class="hero-container relative mx-auto h-[calc(100svh-130px)] min-h-[640px] max-h-[920px] w-full max-w-[1600px] overflow-hidden" data-hero>
+    <!-- Arched Gallery: continuous rotating wheel + ScrollTrigger scrub -->
+    <div class="hero-wheel-viewport" aria-hidden="true">
+      <!-- Rotating wheel container -->
+      <div class="hero-wheel" data-hero-wheel>
+        {heroCardsData.map((c, i) => {
+          const angle = i * angleStep;
+          return (
+            <div
+              class="hero-wheel-slot pointer-events-auto"
+              style={`--slot-angle: ${angle}deg;`}
+            >
+              <figure
+                data-hero-card
+                class="hero-arch-card"
+                tabindex="0"
+                role="img"
+                aria-label={c.title}
+              >
+                <img
+                  src={c.src.replace('w=900', 'w=500').replace('w=1400', 'w=500').replace('w=2000', 'w=500')}
+                  alt={c.title}
+                  class="hero-card-img"
+                  loading="eager"
+                  decoding="async"
+                />
+              </figure>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- copy: centered within the arch opening, perfectly legible with high z-index -->
+    <div class="pointer-events-auto relative z-20 mx-auto flex max-w-3xl flex-col items-center px-6 text-center pt-[150px] sm:pt-[180px] md:pt-[210px] lg:pt-[230px]">
+      <div class="pointer-events-none absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(17,14,12,0.85)_0%,rgba(17,14,12,0.5)_50%,transparent_75%)] blur-2xl"></div>
+
+      <span class="tag tag-dark inline-flex items-center gap-2" data-hero-intro>
+        <Icon name="sparkles" size={12} class="text-accent" />
+        <span>Glowence Salon</span>
+      </span>
+      <h1 id="hero-title" class="h-display mt-5 text-[clamp(2.75rem,7.5vw,6.25rem)] text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.85)]" data-split>
+        Beauty, Refined.
+      </h1>
+      <p class="mt-4 max-w-md text-sm leading-relaxed text-white/80 drop-shadow sm:text-base md:text-lg" data-hero-intro>
+        Luxury hair, skin, and wellness treatments crafted to enhance your natural beauty.
+      </p>
+      <div class="mt-7 flex flex-wrap items-center justify-center gap-4" data-hero-intro>
+        <Button label="Book Appointment" icon="calendar" />
+      </div>
+    </div>
+  </div>
+
+  <!-- value proposition strip -->
+  <div class="relative z-20 border-t border-white/10 bg-espresso/80 backdrop-blur">
+    <ul class="container-x grid grid-cols-2 gap-x-6 gap-y-6 py-7 lg:grid-cols-4" aria-label="Why guests choose Glowence">
+      {valueProps.map((v) => (
+        <li class="flex items-center gap-3.5" data-reveal>
+          <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent/15 text-accent ring-1 ring-accent/30">
+            <Icon name={v.icon} size={18} />
+          </span>
+          <span>
+            <span class="block text-[13px] font-semibold text-white">{v.title}</span>
+            <span class="block text-xs text-white/50">{v.text}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero-container {
+    --wheel-radius: clamp(380px, 34vw, 500px);
+    --wheel-center-y: clamp(580px, 56vh, 690px);
+    --card-width: clamp(86px, 6.8vw, 110px);
+    --card-height: clamp(104px, 8.2vw, 132px);
+  }
+
+  @media (max-width: 639px) {
+    .hero-container {
+      --wheel-radius: clamp(200px, 42vw, 260px);
+      --wheel-center-y: clamp(380px, 52vh, 440px);
+      --card-width: clamp(58px, 14vw, 75px);
+      --card-height: clamp(70px, 17vw, 90px);
+    }
+  }
+
+  /* Viewport with vertical mask: upper arch is 100% visible; bottom dissolves gracefully */
+  .hero-wheel-viewport {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, black 0%, black 65%, rgba(0, 0, 0, 0.4) 82%, transparent 96%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 65%, rgba(0, 0, 0, 0.4) 82%, transparent 96%);
+  }
+
+  /* Rotating Wheel Container */
+  .hero-wheel {
+    position: absolute;
+    left: 50%;
+    top: var(--wheel-center-y);
+    width: 0;
+    height: 0;
+    transform-origin: 0 0;
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  /* Slot positioned radially along the arc */
+  .hero-wheel-slot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--card-width);
+    height: var(--card-height);
+    transform-origin: center center;
+    transform: translate(-50%, -50%) rotate(var(--slot-angle)) translateY(calc(-1 * var(--wheel-radius)));
+    pointer-events: auto;
+  }
+
+  /* The Card: Exact uniform rounded rectangle matching the original template screenshot */
+  .hero-arch-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: #1c1613;
+    box-shadow: 
+      0 12px 28px -6px rgba(0, 0, 0, 0.75),
+      0 3px 10px rgba(0, 0, 0, 0.35);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: grab;
+  }
+
+  .hero-arch-card:active {
+    cursor: grabbing;
+  }
+
+  .hero-arch-card:hover,
+  .hero-arch-card:focus-visible {
+    transform: scale(1.06);
+    border-color: rgba(196, 93, 18, 0.85);
+    box-shadow: 
+      0 20px 40px -6px rgba(0, 0, 0, 0.9),
+      0 0 16px rgba(196, 93, 18, 0.35);
+    z-index: 50;
+  }
+
+  .hero-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-arch-card:hover .hero-card-img {
+    transform: scale(1.05);
+  }
+</style>

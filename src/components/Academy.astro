@@ -1,0 +1,45 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import Button from './ui/Button.astro';
+import Icon from './ui/Icon.astro';
+import { courses } from '../data/content';
+---
+<section id="academy" class="section-y bg-cream" aria-labelledby="academy-title">
+  <div class="container-x">
+    <header class="grid gap-6 lg:grid-cols-2 lg:items-end">
+      <div>
+        <SectionTag text="Glowence Academy" />
+        <h2 id="academy-title" class="h-section mt-5" data-split>Our popular masterclasses</h2>
+      </div>
+      <p class="lede max-w-md lg:justify-self-end" data-reveal>
+        Professional courses taught by the people who run our floor. Small cohorts, real clients, and a certificate recognised across the UK.
+      </p>
+    </header>
+
+    <ul class="mt-14 space-y-5">
+      {courses.map((c) => (
+        <li data-reveal>
+          <article class="card grid items-center gap-6 p-5 sm:p-6 md:grid-cols-[1fr_1.1fr_1fr] md:gap-8" aria-labelledby={`course-${c.title}`}>
+            <div>
+              <span class="chip">{c.category}</span>
+              <h3 id={`course-${c.title}`} class="mt-4 font-serif text-3xl leading-tight">{c.title}</h3>
+              <p class="mt-4 text-sm text-muted">From <span class="font-serif text-2xl text-ink">${c.price.toLocaleString('en-US')}</span></p>
+            </div>
+            <div class="overflow-hidden rounded-2xl">
+              <img src={c.image} alt="" class="aspect-[16/10] w-full object-cover transition duration-700 hover:scale-105" loading="lazy" decoding="async" />
+            </div>
+            <div>
+              <p class="text-sm leading-relaxed text-muted">{c.text}</p>
+              <ul class="mt-4 flex flex-wrap gap-2" aria-label="Course details">
+                <li class="chip"><Icon name="calendar" size={12} />{c.weeks}</li>
+                <li class="chip"><Icon name="clock" size={12} />{c.weekly}</li>
+                <li class="chip"><Icon name={c.modeIcon} size={12} />{c.mode}</li>
+              </ul>
+              <div class="mt-6"><Button label="View Course" ariaLabel={`View course: ${c.title}`} href="#academy" /></div>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

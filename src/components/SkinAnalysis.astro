@@ -1,0 +1,29 @@
+---
+import SectionTag from './ui/SectionTag.astro';
+import Icon from './ui/Icon.astro';
+import { img } from '../data/content';
+const points = [
+  { x: 38, y: 34, label: 'Hydration', value: '72%' },
+  { x: 62, y: 46, label: 'Texture', value: 'Even' },
+  { x: 44, y: 62, label: 'Pores', value: 'Refined' },
+];
+---
+<section class="pb-20 sm:pb-28 lg:pb-32 bg-ivory" aria-labelledby="skin-title">
+  <div class="container-x">
+    <div class="flex justify-center"><SectionTag text="Skin Analysis" /></div>
+    <h2 id="skin-title" class="sr-only">Complimentary skin analysis</h2>
+    <figure class="relative mt-8 overflow-hidden rounded-[32px] bg-cream" data-reveal>
+      <img src={img.skinPortrait} alt="Close-up portrait of a guest during a digital skin analysis" class="aspect-[4/5] w-full object-cover sm:aspect-[16/10]" loading="lazy" decoding="async" data-scale-in />
+      <div class="pointer-events-none absolute inset-x-[18%] h-px bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_18px_4px_rgba(255,255,255,.55)] motion-safe:animate-scan" aria-hidden="true"></div>
+      <figcaption class="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full bg-white/85 px-3.5 py-2 text-xs font-semibold backdrop-blur sm:left-8 sm:top-8">
+        <Icon name="scan" size={14} class="text-accent" /> Skin analysis · included with every facial
+      </figcaption>
+      {points.map((p) => (
+        <div class="absolute hidden items-center gap-2 sm:flex" style={`left:${p.x}%;top:${p.y}%`} aria-hidden="true">
+          <span class="relative grid h-4 w-4 place-items-center"><span class="absolute h-4 w-4 animate-ping rounded-full bg-white/60"></span><span class="h-2 w-2 rounded-full bg-white"></span></span>
+          <span class="rounded-full bg-black/40 px-2.5 py-1 text-[11px] text-white backdrop-blur">{p.label} · {p.value}</span>
+        </div>
+      ))}
+    </figure>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Features from '../components/Features.astro';
+import Reels from '../components/Reels.astro';
+import Services from '../components/Services.astro';
+import Process from '../components/Process.astro';
+import Pricing from '../components/Pricing.astro';
+import SkinAnalysis from '../components/SkinAnalysis.astro';
+import Academy from '../components/Academy.astro';
+import Team from '../components/Team.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Journal from '../components/Journal.astro';
+import OrbitCTA from '../components/OrbitCTA.astro';
+import Footer from '../components/Footer.astro';
+
+export const prerender = true;
+---
+<Layout>
+  <Navbar />
+  <main id="main">
+    <Hero />            {/* 1 + 2: hero with value-prop strip docked beneath it */}
+    <About />           {/* 3 */}
+    <Features />        {/* 4 */}
+    <Reels />           {/* 5 */}
+    <Services />        {/* 6 */}
+    <Process />         {/* 7 */}
+    <Pricing />         {/* 8 */}
+    <SkinAnalysis />    {/* (from the reference, between pricing and academy) */}
+    <Academy />         {/* 9 */}
+    <Team />            {/* 10 */}
+    <Testimonials />    {/* 11 */}
+    <Journal />         {/* 12 */}
+    <OrbitCTA />        {/* 13 */}
+  </main>
+  <Footer />            {/* 14 */}
+</Layout>

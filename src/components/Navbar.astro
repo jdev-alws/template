@@ -1,0 +1,42 @@
+---
+import Icon from './ui/Icon.astro';
+import Button from './ui/Button.astro';
+import { nav } from '../data/content';
+---
+<header data-nav class="fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,box-shadow] duration-500 [&.is-scrolled]:bg-espresso/80 [&.is-scrolled]:shadow-[0_1px_0_rgba(255,255,255,.06)] [&.is-scrolled]:backdrop-blur-xl">
+  <nav class="container-x flex h-[72px] items-center justify-between gap-6" aria-label="Primary">
+    <a href="#top" class="flex items-center gap-2.5 text-white" aria-label="Glowence home" data-hero-intro>
+      <span class="grid h-8 w-8 place-items-center rounded-full bg-accent">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" aria-hidden="true"><path fill="#fff" d="M12 2c1.6 4.4 4.6 7.4 9 9-4.4 1.6-7.4 4.6-9 9-1.6-4.4-4.6-7.4-9-9 4.4-1.6 7.4-4.6 9-9z"/></svg>
+      </span>
+      <span class="font-serif text-xl font-semibold tracking-[0.14em]">GLOWENCE</span>
+    </a>
+
+    <ul class="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 backdrop-blur lg:flex" data-hero-intro>
+      {nav.map((l) => (
+        <li><a href={l.href} class="block rounded-full px-4 py-2 text-[13px] text-white/75 transition hover:bg-white/10 hover:text-white">{l.label}</a></li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-3" data-hero-intro>
+      <Button label="Book Appointment" icon="calendar" class="hidden sm:inline-flex" />
+      <button type="button" data-menu-btn aria-expanded="false" aria-controls="mobile-menu" class="grid h-11 w-11 place-items-center rounded-full border border-white/15 text-white lg:hidden">
+        <span class="sr-only">Open menu</span><Icon name="menu" size={20} />
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" data-menu hidden class="fixed inset-0 z-[60] bg-espresso/95 backdrop-blur-xl lg:hidden">
+    <div class="container-x flex h-[72px] items-center justify-end">
+      <button type="button" data-menu-close class="grid h-11 w-11 place-items-center rounded-full border border-white/15 text-white">
+        <span class="sr-only">Close menu</span><Icon name="x" size={20} />
+      </button>
+    </div>
+    <ul class="container-x mt-6 space-y-1">
+      {nav.map((l) => (
+        <li><a href={l.href} data-menu-link class="block border-b border-white/10 py-4 font-serif text-4xl text-white">{l.label}</a></li>
+      ))}
+    </ul>
+    <div class="container-x mt-10"><Button label="Book Appointment" icon="calendar" /></div>
+  </div>
+</header>

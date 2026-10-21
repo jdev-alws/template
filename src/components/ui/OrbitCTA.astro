@@ -1,0 +1,214 @@
+---
+import SectionTag from './SectionTag.astro';
+import Button from './Button.astro';
+import { orbit } from '../../data/content';
+const place = (list: string[], offset = 0) =>
+  list.map((src, i) => ({ src, a: `${offset + (360 / list.length) * i}deg` }));
+const inner = place(orbit.inner, 20);
+const outer = place(orbit.outer);
+---
+<section id="book" class="relative overflow-hidden bg-ivory py-24 sm:py-32" aria-labelledby="cta-title" data-orbit>
+  <div class="relative left-1/2 grid aspect-square w-[var(--W)] -translate-x-1/2 place-items-center [--W:min(1000px,150vw)] sm:[--W:min(1000px,110vw)]">
+    <!-- rings -->
+    <div class="absolute inset-0 rounded-full border border-dashed border-[rgb(196_93_18)]" aria-hidden="true"></div>
+    <div class="absolute inset-[16%] rounded-full border border-[rgb(196_93_18)]" aria-hidden="true"></div>
+    <div class="absolute inset-[32%] rounded-full bg-cream/70" aria-hidden="true"></div>
+
+    <!-- outer orbit -->
+    <div class="orbit-ring absolute inset-0" style="--dur:90s" aria-hidden="true" data-orbit-ring>
+      {outer.map((o, i) => (
+        <div class="orbit-item" style={`--a:${o.a};--r:calc(var(--W)/2)`}>
+          <div class="orbit-inner">
+            <div class="relative" data-antigravity-float>
+              <img src={o.src.replace(/w=\d+/, 'w=200')} alt="" class="h-14 w-14 rounded-full border-4 border-ivory object-cover shadow-card sm:h-20 sm:w-20" loading="lazy" decoding="async" data-orbit-item />
+              {i % 2 === 0 && <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-ink px-2 py-0.5 text-[9px] font-semibold text-white shadow-xs">@2026</span>}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- inner orbit -->
+    <div class="orbit-ring rev absolute inset-[16%]" style="--dur:70s" aria-hidden="true" data-orbit-ring="reverse">
+      {inner.map((o) => (
+        <div class="orbit-item" style={`--a:${o.a};--r:calc(var(--W)*0.34)`}>
+          <div class="orbit-inner">
+            <div data-antigravity-float>
+              <img src={o.src.replace(/w=\d+/, 'w=160')} alt="" class="h-12 w-12 rounded-full border-4 border-ivory object-cover shadow-card sm:h-16 sm:w-16" loading="lazy" decoding="async" data-orbit-item />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Floating Anti-Gravity ambient badges right above footer -->
+    <div class="pointer-events-none absolute left-[8%] sm:left-[12%] top-[14%] hidden sm:flex items-center gap-2 rounded-full border border-sand/80 bg-white/85 px-3.5 py-1.5 text-xs font-semibold text-ink/80 shadow-xs backdrop-blur select-none" data-orbit-badge aria-hidden="true">
+      <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+      <span>Holistic Sanctuary</span>
+    </div>
+    <div class="pointer-events-none absolute right-[8%] sm:right-[12%] bottom-[16%] hidden sm:flex items-center gap-2 rounded-full border border-sand/80 bg-white/85 px-3.5 py-1.5 text-xs font-semibold text-ink/80 shadow-xs backdrop-blur select-none" data-orbit-badge aria-hidden="true">
+      <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+      <span>Radiant Transformation</span>
+    </div>
+
+    <!-- centre card -->
+    <div class="relative z-10 mx-6 max-w-sm rounded-[28px] border border-sand bg-white/90 px-8 py-10 text-center shadow-card backdrop-blur" data-orbit-card>
+      <SectionTag text="Book a visit" />
+      <h2 id="cta-title" class="h-display mt-5 text-4xl sm:text-5xl" data-split>Ready to Glow Your Skin?</h2>
+      <p class="lede mt-3">First visits include a complimentary skin and scalp consultation.</p>
+      <div class="mt-7"><Button label="Book Appointment" icon="calendar" href="#book" /></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initOrbit() {
+    const section = document.querySelector('[data-orbit]');
+    if (!section) return;
+
+    const outerRing = section.querySelector<HTMLElement>('[data-orbit-ring]:not([data-orbit-ring="reverse"])');
+    const innerRing = section.querySelector<HTMLElement>('[data-orbit-ring="reverse"]');
+    const outerPhotos = outerRing ? Array.from(outerRing.querySelectorAll<HTMLElement>('[data-orbit-item]')) : [];
+    const innerPhotos = innerRing ? Array.from(innerRing.querySelectorAll<HTMLElement>('[data-orbit-item]')) : [];
+    const allPhotos = [...outerPhotos, ...innerPhotos];
+    const centerCard = section.querySelector<HTMLElement>('[data-orbit-card]');
+    const badges = Array.from(section.querySelectorAll<HTMLElement>('[data-orbit-badge]'));
+
+    // Independent infinite rotation tweens
+    const tweens: gsap.core.Tween[] = [];
+
+    // 1. Outer circle rotates clockwise, 90s, ease: none, repeat: -1
+    if (outerRing) {
+      tweens.push(
+        gsap.to(outerRing, {
+          rotation: 360,
+          duration: 90,
+          repeat: -1,
+          ease: 'none',
+          transformOrigin: '50% 50%',
+        })
+      );
+    }
+
+    // 2. Photos on outer circle counter-rotate at 90s to stay upright
+    if (outerPhotos.length) {
+      tweens.push(
+        gsap.to(outerPhotos, {
+          rotation: -360,
+          duration: 90,
+          repeat: -1,
+          ease: 'none',
+          transformOrigin: '50% 50%',
+        })
+      );
+    }
+
+    // 3. Inner circle rotates anticlockwise, 70s, ease: none, repeat: -1
+    if (innerRing) {
+      tweens.push(
+        gsap.to(innerRing, {
+          rotation: -360,
+          duration: 70,
+          repeat: -1,
+          ease: 'none',
+          transformOrigin: '50% 50%',
+        })
+      );
+    }
+
+    // 4. Photos on inner circle counter-rotate at 70s to stay upright
+    if (innerPhotos.length) {
+      tweens.push(
+        gsap.to(innerPhotos, {
+          rotation: 360,
+          duration: 70,
+          repeat: -1,
+          ease: 'none',
+          transformOrigin: '50% 50%',
+        })
+      );
+    }
+
+    // 5. Anti-gravity badges
+    badges.forEach((b, i) => {
+      tweens.push(
+        gsap.to(b, {
+          y: i === 0 ? -10 : 8,
+          duration: 4.5 + i,
+          yoyo: true,
+          repeat: -1,
+          ease: 'sine.inOut',
+        })
+      );
+    });
+
+    // 6. Pause on mouse hover over section, resume on leave
+    let isHovered = false;
+    section.addEventListener('mouseenter', () => {
+      isHovered = true;
+      tweens.forEach((t) => t.pause());
+    });
+    section.addEventListener('mouseleave', () => {
+      isHovered = false;
+      tweens.forEach((t) => t.play());
+    });
+
+    // 7. Pause rotation when section is off screen using ScrollTrigger onToggle
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top bottom',
+      end: 'bottom top',
+      onToggle: (self) => {
+        if (self.isActive) {
+          if (!isHovered) tweens.forEach((t) => t.play());
+        } else {
+          tweens.forEach((t) => t.pause());
+        }
+      },
+    });
+
+    // 8. Centre card entrance & photos scale/fade
+    // When the section reaches 70% of the viewport (once), card fades in and moves up from 40px below.
+    // Then photos scale from 0.6 to 1 and fade in with small stagger.
+    if (centerCard && allPhotos.length) {
+      gsap.set(centerCard, { opacity: 0, y: 40 });
+      gsap.set(allPhotos, { opacity: 0, scale: 0.6 });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 70%',
+        once: true,
+        onEnter: () => {
+          const tl = gsap.timeline();
+          tl.to(centerCard, {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: 'power2.out',
+          });
+          tl.to(allPhotos, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: 'back.out(1.4)',
+          }, '-=0.3');
+        },
+      });
+    }
+
+    ScrollTrigger.refresh();
+  }
+
+  document.addEventListener('astro:page-load', initOrbit);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initOrbit);
+  } else {
+    initOrbit();
+  }
+</script>
